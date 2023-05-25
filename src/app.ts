@@ -1,57 +1,52 @@
-class Key {
-  private signature: number;
-  constructor() {
-    this.signature = Math.random();
-  }
-  getSignature(): number {
-    return this.signature;
-  }
+function getPromise(): Promise<Array<string | number>> {
+  return new Promise((resolve) => {
+    resolve(["Text", 50]);
+  });
 }
 
-class Person {
-  constructor(private key: Key, private name: string) {}
-  getKey(): Key {
-    return this.key;
-  }
-  getName(): string {
-    return this.name;
-  }
+getPromise().then((data) => {
+  console.log(data);
+});
+
+//-------------------
+
+type AllType = {
+  name: string;
+  position: number;
+  color: string;
+  weight: number;
+};
+
+function compare(
+  top: Pick<AllType, "name" | "color">,
+  bottom: Pick<AllType, "position" | "weight">
+): AllType {
+  return {
+    name: top.name,
+    color: top.color,
+    position: bottom.position,
+    weight: bottom.weight,
+  };
 }
 
-abstract class House {
-  protected door: "open" | "close" = "close";
-  private tenants: Person[] = [];
-  constructor(protected key: Key) {
-    this.key = key;
-  }
-  comeIn(p: Person): void {
-    if (this.door === "open") {
-      this.tenants.push(p);
-      console.log(`${p.getName()}'s inside`);
-    }
-  }
+//-------------------
 
-  getTenants(): Person[] {
-    return this.tenants;
-  }
-  public abstract openDoor(k: Key): string;
+function merge<T extends object, U extends object>(objA: T, objB: U) {
+  return Object.assign({}, objA, objB);
 }
 
-class MyHouse extends House {
-  constructor(k: Key) {
-    super(k);
-  }
-  openDoor(k: Key): string {
-    if (k.getSignature() !== this.key.getSignature()) {
-      throw new Error("Key to another door");
-    }
-    return (this.door = "open");
-  }
+//------------------
+
+interface IProps {
+  title: string;
 }
 
-const key = new Key();
-const bob = new Person(key, "Bob");
-const cottege = new MyHouse(key);
-cottege.openDoor(bob.getKey());
-cottege.comeIn(bob);
-console.log(cottege.getTenants());
+class Component<T> {
+  constructor(public props: T) {}
+}
+
+class Page extends Component<IProps> {
+  pageInfo() {
+    console.log(this.props.title);
+  }
+}

@@ -1,56 +1,31 @@
 "use strict";
-class Key {
-    constructor() {
-        this.signature = Math.random();
-    }
-    getSignature() {
-        return this.signature;
+function getPromise() {
+    return new Promise((resolve) => {
+        resolve(["Text", 50]);
+    });
+}
+getPromise().then((data) => {
+    console.log(data);
+});
+function compare(top, bottom) {
+    return {
+        name: top.name,
+        color: top.color,
+        position: bottom.position,
+        weight: bottom.weight,
+    };
+}
+function merge(objA, objB) {
+    return Object.assign({}, objA, objB);
+}
+class Component {
+    constructor(props) {
+        this.props = props;
     }
 }
-class Person {
-    constructor(key, name) {
-        this.key = key;
-        this.name = name;
-    }
-    getKey() {
-        return this.key;
-    }
-    getName() {
-        return this.name;
+class Page extends Component {
+    pageInfo() {
+        console.log(this.props.title);
     }
 }
-class House {
-    constructor(key) {
-        this.key = key;
-        this.door = "close";
-        this.tenants = [];
-        this.key = key;
-    }
-    comeIn(p) {
-        if (this.door === "open") {
-            this.tenants.push(p);
-            console.log(`${p.getName()}'s inside`);
-        }
-    }
-    getTenants() {
-        return this.tenants;
-    }
-}
-class MyHouse extends House {
-    constructor(k) {
-        super(k);
-    }
-    openDoor(k) {
-        if (k.getSignature() !== this.key.getSignature()) {
-            throw new Error("Key to another door");
-        }
-        return (this.door = "open");
-    }
-}
-const key = new Key();
-const bob = new Person(key, "Bob");
-const cottege = new MyHouse(key);
-cottege.openDoor(bob.getKey());
-cottege.comeIn(bob);
-console.log(cottege.getTenants());
 //# sourceMappingURL=app.js.map
